@@ -134,6 +134,24 @@ browser.commands.onCommand.addListener(async (command) => {
 
 // Message handler: expose page requests all tab data
 browser.runtime.onMessage.addListener((message, sender, sendResponse) => {
+  const exposeUrl = browser.runtime.getURL("expose.html");
+  const isTrustedSender =
+    sender?.id === browser.runtime.id &&
+    typeof sender?.url === "string" &&
+    sender.url.startsWith(exposeUrl);
+
+  const privilegedTypes = new Set([
+    "GET_ALL_TABS",
+    "SWITCH_TAB",
+    "CLOSE_TAB",
+    "CAPTURE_MISSING_SCREENSHOTS",
+  ]);
+
+  if (privilegedTypes.has(message?.type) && !isTrustedSender) {
+    sendResponse({ ok: false, error: "Unauthorized sender" });
+    return false;
+  }
+
   if (message.type === "GET_ALL_TABS") {
     browser.tabs.query({}).then(async (tabs) => {
       const result = tabs
@@ -175,13 +193,15 @@ browser.runtime.onMessage.addListener((message, sender, sendResponse) => {
   }
 
   if (message.type === "CAPTURE_MISSING_SCREENSHOTS") {
-    const requestedIds = new Set(message.tabIds || []);
+    const requestedIds = (message.tabIds || []).filter((id) => id != null);
 
-    browser.tabs.query({}).then(async (tabs) => {
+    Promise.all(
+      requestedIds.map((id) => browser.tabs.get(id).catch(() => null)),
+    ).then(async (tabs) => {
       const screenshots = {};
 
       for (const tab of tabs) {
-        if (!requestedIds.has(tab.id)) continue;
+        if (!tab?.id) continue;
 
         const existing = screenshotCache.get(tab.id);
         if (existing?.dataUrl) {

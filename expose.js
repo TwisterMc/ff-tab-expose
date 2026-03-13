@@ -144,7 +144,7 @@ function buildCard(tab) {
   card.className = "tab-card";
   card.dataset.tabId = tab.id;
   card.tabIndex = 0;
-  card.setAttribute("role", "listitem");
+  card.setAttribute("role", "button");
   const labelParts = [tab.title || "Untitled"];
   if (tab.pinned) labelParts.push("pinned");
   card.setAttribute("aria-label", labelParts.join(", "));
