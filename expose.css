@@ -128,8 +128,6 @@ body {
   overflow-y: auto;
   overflow-x: hidden;
   padding: 8px 24px 32px;
-  scrollbar-width: thin;
-  scrollbar-color: rgba(255, 255, 255, 0.1) transparent;
 }
 
 #grid {
@@ -167,11 +165,8 @@ body {
 }
 
 .tab-card:hover {
-  transform: translateY(-2px) scale(1.005);
   border-color: var(--border-hover);
-  box-shadow:
-    0 8px 24px rgba(0, 0, 0, 0.4),
-    0 1px 0 rgba(255, 255, 255, 0.05) inset;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
 .tab-card:focus-visible {
@@ -409,5 +404,23 @@ body {
   to {
     opacity: 0;
     transform: scale(0.88);
+  }
+}
+
+/* Light appearance theme override */
+@media (prefers-color-scheme: light) {
+  :root {
+    --bg: #f3f5f8;
+    --surface: #ffffff;
+    --surface-raised: #eef2f7;
+    --border: rgba(12, 18, 28, 0.12);
+    --border-hover: rgba(12, 18, 28, 0.32);
+    --text-primary: rgba(12, 18, 28, 0.92);
+    --text-tertiary: rgba(12, 18, 28, 0.56);
+    --accent-glow: rgba(10, 132, 255, 0.2);
+  }
+
+  .stale-dot {
+    background: rgba(12, 18, 28, 0.28);
   }
 }
