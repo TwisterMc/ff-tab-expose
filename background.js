@@ -68,13 +68,13 @@ browser.tabs.onRemoved.addListener((tabId) => {
   screenshotCache.delete(tabId);
 });
 
-async function openExposeTab() {
+async function toggleExposeTab() {
   const exposeUrl = browser.runtime.getURL("expose.html");
 
-  // Check if exposé is already open
+  // If exposé is already open, close it (toggle behavior)
   const existing = await browser.tabs.query({ url: exposeUrl });
   if (existing.length > 0) {
-    await browser.tabs.update(existing[0].id, { active: true });
+    await browser.tabs.remove(existing.map((tab) => tab.id));
     return;
   }
 
@@ -83,14 +83,14 @@ async function openExposeTab() {
 
 // Open exposé page when toolbar button clicked
 browser.browserAction.onClicked.addListener(async () => {
-  await openExposeTab();
+  await toggleExposeTab();
   captureCurrentTab();
 });
 
 // Handle keyboard shortcut
 browser.commands.onCommand.addListener(async (command) => {
   if (command === "open-expose") {
-    await openExposeTab();
+    await toggleExposeTab();
     captureCurrentTab();
   }
 });
