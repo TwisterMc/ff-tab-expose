@@ -68,11 +68,7 @@ browser.tabs.onRemoved.addListener((tabId) => {
   screenshotCache.delete(tabId);
 });
 
-// Open exposé page when toolbar button clicked
-browser.browserAction.onClicked.addListener(async () => {
-  // Capture current tab before opening exposé
-  await captureCurrentTab();
-
+async function openExposeTab() {
   const exposeUrl = browser.runtime.getURL("expose.html");
 
   // Check if exposé is already open
@@ -83,24 +79,19 @@ browser.browserAction.onClicked.addListener(async () => {
   }
 
   await browser.tabs.create({ url: exposeUrl });
+}
+
+// Open exposé page when toolbar button clicked
+browser.browserAction.onClicked.addListener(async () => {
+  await openExposeTab();
+  captureCurrentTab();
 });
 
 // Handle keyboard shortcut
 browser.commands.onCommand.addListener(async (command) => {
   if (command === "open-expose") {
-    // Capture current tab before opening exposé
-    await captureCurrentTab();
-
-    const exposeUrl = browser.runtime.getURL("expose.html");
-
-    // Check if exposé is already open
-    const existing = await browser.tabs.query({ url: exposeUrl });
-    if (existing.length > 0) {
-      await browser.tabs.update(existing[0].id, { active: true });
-      return;
-    }
-
-    await browser.tabs.create({ url: exposeUrl });
+    await openExposeTab();
+    captureCurrentTab();
   }
 });
 
