@@ -485,10 +485,6 @@ body {
     color: rgba(12, 18, 28, 0.8);
   }
 
-  .tab-close:hover {
-    color: white;
-  }
-
   .stale-dot {
     background: rgba(12, 18, 28, 0.28);
   }
