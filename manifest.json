@@ -50,7 +50,7 @@
 
   "page_action": {},
 
-  "web_accessible_resources": ["expose.html"],
+  "web_accessible_resources": ["expose.html", "icons/*.svg"],
 
   "browser_specific_settings": {
     "gecko": {

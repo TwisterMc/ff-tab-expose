@@ -125,8 +125,11 @@ function buildCard(tab) {
   if (tab.pinned) {
     const pin = document.createElement("div");
     pin.className = "pin-badge";
-    pin.textContent = "📌";
     pin.setAttribute("aria-hidden", "true");
+    const pinImg = document.createElement("img");
+    pinImg.src = browser.runtime.getURL("icons/pin.fill.svg");
+    pinImg.alt = "";
+    pin.appendChild(pinImg);
     thumb.appendChild(pin);
   }
 
