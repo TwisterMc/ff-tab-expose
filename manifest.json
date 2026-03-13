@@ -1,0 +1,29 @@
+{
+  "manifest_version": 2,
+  "name": "FF Tab Exposé",
+  "version": "1.0.0",
+  "description": "Visual Safari-style tab overview",
+
+  "permissions": ["tabs", "activeTab", "<all_urls>"],
+
+  "browser_action": {
+    "default_icon": "icons/rectangle.on.rectangle.svg",
+    "default_title": "Tab Exposé"
+  },
+
+  "background": {
+    "scripts": ["background.js"],
+    "persistent": false
+  },
+
+  "page_action": {},
+
+  "web_accessible_resources": ["expose.html"],
+
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "tab-expose@extension",
+      "strict_min_version": "91.0"
+    }
+  }
+}

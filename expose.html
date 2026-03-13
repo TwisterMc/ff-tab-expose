@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tab Exposé</title>
+    <link rel="stylesheet" href="expose.css" />
+  </head>
+  <body>
+    <div id="app">
+      <header id="header">
+        <div id="search-wrap">
+          <svg
+            id="search-icon"
+            viewBox="0 0 20 20"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <circle
+              cx="8.5"
+              cy="8.5"
+              r="5.5"
+              stroke="currentColor"
+              stroke-width="1.5"
+            />
+            <path
+              d="M13 13L17 17"
+              stroke="currentColor"
+              stroke-width="1.5"
+              stroke-linecap="round"
+            />
+          </svg>
+          <input
+            type="text"
+            id="search"
+            placeholder="Search tabs"
+            autocomplete="off"
+            spellcheck="false"
+          />
+          <kbd id="esc-hint">esc</kbd>
+        </div>
+      </header>
+
+      <div id="grid-container">
+        <div id="grid"></div>
+        <div id="tab-count"></div>
+      </div>
+    </div>
+
+    <script src="expose.js"></script>
+  </body>
+</html>
