@@ -119,7 +119,8 @@ async function toggleExposeTab() {
 }
 
 // Open exposé page when toolbar button clicked
-browser.browserAction.onClicked.addListener(async () => {
+const toolbarAction = browser.action || browser.browserAction;
+toolbarAction.onClicked.addListener(async () => {
   await toggleExposeTab();
   captureCurrentTab();
 });
