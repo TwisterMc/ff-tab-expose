@@ -6,6 +6,11 @@
 
   "permissions": ["tabs", "activeTab", "<all_urls>", "storage"],
 
+  "icons": {
+    "48": "icons/rectangle.on.rectangle.svg",
+    "96": "icons/rectangle.on.rectangle.svg"
+  },
+
   "browser_action": {
     "default_icon": "icons/rectangle.on.rectangle.light.svg",
     "theme_icons": [
