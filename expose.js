@@ -80,6 +80,9 @@ function buildCard(tab) {
   const card = document.createElement("div");
   card.className = "tab-card" + (tab.active ? " active-tab" : "");
   card.dataset.tabId = tab.id;
+  card.tabIndex = 0;
+  card.setAttribute("role", "button");
+  card.setAttribute("aria-label", tab.title || "Untitled");
 
   const domain = getDomain(tab.url);
   const ageMinutes =
@@ -126,6 +129,7 @@ function buildCard(tab) {
   const closeBtn = document.createElement("button");
   closeBtn.className = "tab-close";
   closeBtn.title = "Close tab";
+  closeBtn.tabIndex = -1;
   closeBtn.innerHTML = `
     <svg viewBox="0 0 10 10" xmlns="http://www.w3.org/2000/svg">
       <line x1="1" y1="1" x2="9" y2="9"/>
@@ -169,6 +173,16 @@ function buildCard(tab) {
   card.appendChild(info);
 
   card.addEventListener("click", () => switchToTab(tab.id, tab.windowId));
+
+  card.addEventListener("keydown", (e) => {
+    if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault();
+      switchToTab(tab.id, tab.windowId);
+    } else if (e.key === "Delete" || e.key === "Backspace") {
+      e.preventDefault();
+      closeTab(tab.id, card);
+    }
+  });
 
   return card;
 }
@@ -249,7 +263,12 @@ searchInput.addEventListener("keydown", (e) => {
 
 document.addEventListener("keydown", (e) => {
   if (e.key === "Escape" && document.activeElement !== searchInput) {
-    window.close();
+    // If focus is on a card, return focus to search; otherwise close
+    if (document.activeElement?.classList.contains("tab-card")) {
+      searchInput.focus();
+    } else {
+      window.close();
+    }
   }
 });
 
