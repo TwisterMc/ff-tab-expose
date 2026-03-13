@@ -2,12 +2,13 @@
 
 FF Tab Expose gives you a visual overview of your open Firefox tabs, inspired by Safari-style tab expose.
 
+![Screenshot of FF Tab Expose](screenshot.webp "FF Tab Expose in action")
+
 ## What It Does
 
 - Shows all open tabs in a clean visual grid
 - Lets you search tabs by title or URL
-- Displays tab previews (screenshots) when available
-- Supports multiple windows
+- Displays tab previews
 - Lets you switch or close tabs quickly
 
 ## Install
