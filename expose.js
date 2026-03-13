@@ -319,14 +319,33 @@ searchInput.addEventListener("input", () => {
   if (!ready) return;
   const q = searchInput.value.trim();
   const results = q ? filterTabs(allTabs, q) : allTabs;
-  render(results);
+
+  // Build a set of visible tab IDs for faster lookup
+  const visibleIds = new Set(results.map((t) => t.id));
+
+  // Filter cards by visibility instead of re-rendering
+  const allCards = grid.querySelectorAll(".tab-card");
+  let visibleCount = 0;
+
+  allCards.forEach((card) => {
+    const tabId = parseInt(card.dataset.tabId, 10);
+    const isVisible = visibleIds.has(tabId);
+    card.style.display = isVisible ? "" : "none";
+    if (isVisible) visibleCount++;
+  });
+
+  // Update tab count
+  tabCountEl.textContent = `${visibleCount} tab${visibleCount !== 1 ? "s" : ""}`;
 });
 
 searchInput.addEventListener("keydown", (e) => {
   if (e.key === "Escape") {
     if (searchInput.value) {
       searchInput.value = "";
-      render(allTabs);
+      // Show all cards
+      const allCards = grid.querySelectorAll(".tab-card, .window-group");
+      allCards.forEach((el) => (el.style.display = ""));
+      tabCountEl.textContent = `${allTabs.length} tab${allTabs.length !== 1 ? "s" : ""}`;
     } else {
       window.close();
     }
