@@ -81,8 +81,11 @@ function buildCard(tab) {
   card.className = "tab-card" + (tab.active ? " active-tab" : "");
   card.dataset.tabId = tab.id;
   card.tabIndex = 0;
-  card.setAttribute("role", "button");
-  card.setAttribute("aria-label", tab.title || "Untitled");
+  card.setAttribute("role", "listitem");
+  const labelParts = [tab.title || "Untitled"];
+  if (tab.active) labelParts.push("active tab");
+  if (tab.pinned) labelParts.push("pinned");
+  card.setAttribute("aria-label", labelParts.join(", "));
 
   const domain = getDomain(tab.url);
   const ageMinutes =
@@ -95,7 +98,7 @@ function buildCard(tab) {
   if (tab.screenshot) {
     const img = document.createElement("img");
     img.src = tab.screenshot;
-    img.alt = tab.title;
+    img.alt = "";
     img.loading = "lazy";
     thumb.appendChild(img);
   } else {
@@ -106,6 +109,7 @@ function buildCard(tab) {
       const fav = document.createElement("img");
       fav.className = "favicon-large";
       fav.src = tab.favIconUrl;
+      fav.alt = "";
       fav.onerror = () => fav.remove();
       noShot.appendChild(fav);
     }
@@ -122,6 +126,7 @@ function buildCard(tab) {
     const pin = document.createElement("div");
     pin.className = "pin-badge";
     pin.textContent = "📌";
+    pin.setAttribute("aria-hidden", "true");
     thumb.appendChild(pin);
   }
 
@@ -150,6 +155,7 @@ function buildCard(tab) {
     const fav = document.createElement("img");
     fav.className = "tab-favicon";
     fav.src = tab.favIconUrl;
+    fav.alt = "";
     fav.onerror = () => fav.replaceWith(makeFavPlaceholder());
     info.appendChild(fav);
   } else {
@@ -209,10 +215,20 @@ async function switchToTab(tabId, windowId) {
 }
 
 async function closeTab(tabId, cardEl) {
+  // Move focus before removing the card
+  const cards = [...grid.querySelectorAll(".tab-card")];
+  const idx = cards.indexOf(cardEl);
+  const nextFocus = cards[idx + 1] ?? cards[idx - 1] ?? searchInput;
+
   cardEl.classList.add("removing");
-  cardEl.addEventListener("animationend", () => cardEl.remove(), {
-    once: true,
-  });
+  cardEl.addEventListener(
+    "animationend",
+    () => {
+      cardEl.remove();
+      nextFocus.focus();
+    },
+    { once: true },
+  );
 
   allTabs = allTabs.filter((t) => t.id !== tabId);
 

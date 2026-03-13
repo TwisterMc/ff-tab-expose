@@ -15,6 +15,7 @@
             viewBox="0 0 20 20"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
+            aria-hidden="true"
           >
             <circle
               cx="8.5"
@@ -34,6 +35,7 @@
             type="text"
             id="search"
             placeholder="Search tabs"
+            aria-label="Search tabs"
             autocomplete="off"
             spellcheck="false"
           />
@@ -42,8 +44,8 @@
       </header>
 
       <div id="grid-container">
-        <div id="grid"></div>
-        <div id="tab-count"></div>
+        <div id="grid" role="list"></div>
+        <div id="tab-count" aria-live="polite" aria-atomic="true"></div>
       </div>
     </div>
 
