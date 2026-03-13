@@ -1,6 +1,35 @@
 // Tab screenshot cache: tabId -> { dataUrl, timestamp, title, url, favIconUrl }
 const screenshotCache = new Map();
 
+function setCachedScreenshot(tabId, entry) {
+  screenshotCache.set(tabId, entry);
+  browser.storage.local.set({ [`ss_${tabId}`]: entry });
+}
+
+function deleteCachedScreenshot(tabId) {
+  screenshotCache.delete(tabId);
+  browser.storage.local.remove(`ss_${tabId}`);
+}
+
+// Load persisted screenshots on startup, then clean up stale entries
+browser.storage.local.get(null).then((stored) => {
+  for (const [key, value] of Object.entries(stored)) {
+    if (key.startsWith("ss_")) {
+      const tabId = parseInt(key.slice(3), 10);
+      if (!isNaN(tabId)) screenshotCache.set(tabId, value);
+    }
+  }
+  browser.tabs.query({}).then((tabs) => {
+    const validIds = new Set(tabs.map((t) => t.id));
+    const staleKeys = Object.keys(stored).filter((key) => {
+      if (!key.startsWith("ss_")) return false;
+      const tabId = parseInt(key.slice(3), 10);
+      return !isNaN(tabId) && !validIds.has(tabId);
+    });
+    if (staleKeys.length) browser.storage.local.remove(staleKeys);
+  });
+});
+
 function isCapturableUrl(url = "") {
   return !url.startsWith("about:") && !url.startsWith("moz-extension:");
 }
@@ -27,7 +56,7 @@ async function captureTabScreenshot(tab) {
 
     if (!dataUrl) return null;
 
-    screenshotCache.set(tab.id, {
+    setCachedScreenshot(tab.id, {
       dataUrl,
       timestamp: Date.now(),
       title: tab.title,
@@ -63,7 +92,7 @@ async function captureCurrentTab() {
       quality: 70,
     });
 
-    screenshotCache.set(tab.id, {
+    setCachedScreenshot(tab.id, {
       dataUrl,
       timestamp: Date.now(),
       title: tab.title,
@@ -86,7 +115,7 @@ browser.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
   if (changeInfo.status === "complete") {
     const existing = screenshotCache.get(tabId);
     if (existing) {
-      screenshotCache.set(tabId, {
+      setCachedScreenshot(tabId, {
         ...existing,
         title: tab.title,
         url: tab.url,
@@ -102,7 +131,7 @@ browser.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
 
 // Clean up when tab is closed
 browser.tabs.onRemoved.addListener((tabId) => {
-  screenshotCache.delete(tabId);
+  deleteCachedScreenshot(tabId);
 });
 
 async function toggleExposeTab() {
