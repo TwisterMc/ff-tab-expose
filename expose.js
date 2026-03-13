@@ -78,12 +78,11 @@ function render(tabs) {
 
 function buildCard(tab) {
   const card = document.createElement("div");
-  card.className = "tab-card" + (tab.active ? " active-tab" : "");
+  card.className = "tab-card";
   card.dataset.tabId = tab.id;
   card.tabIndex = 0;
   card.setAttribute("role", "listitem");
   const labelParts = [tab.title || "Untitled"];
-  if (tab.active) labelParts.push("active tab");
   if (tab.pinned) labelParts.push("pinned");
   card.setAttribute("aria-label", labelParts.join(", "));
 

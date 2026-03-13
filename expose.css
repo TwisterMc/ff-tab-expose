@@ -13,13 +13,11 @@
   --border: rgba(255, 255, 255, 0.07);
   --border-hover: rgba(255, 255, 255, 0.14);
   --text-primary: rgba(255, 255, 255, 0.92);
-  --text-secondary: rgba(255, 255, 255, 0.55);
   --text-tertiary: rgba(255, 255, 255, 0.45);
   --accent: #0a84ff;
   --accent-glow: rgba(10, 132, 255, 0.25);
   --red: #ff453a;
   --card-radius: 10px;
-  --thumb-ratio: 9/16;
   --transition-card: 180ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 
@@ -174,20 +172,6 @@ body {
   box-shadow:
     0 8px 24px rgba(0, 0, 0, 0.4),
     0 1px 0 rgba(255, 255, 255, 0.05) inset;
-}
-
-.tab-card.active-tab {
-  border-color: var(--accent);
-  box-shadow:
-    0 0 0 1px var(--accent),
-    0 0 12px var(--accent-glow);
-}
-
-.tab-card.active-tab:hover {
-  box-shadow:
-    0 0 0 1px var(--accent),
-    0 0 20px var(--accent-glow),
-    0 8px 24px rgba(0, 0, 0, 0.4);
 }
 
 .tab-card:focus-visible {
@@ -385,7 +369,6 @@ body {
   border-radius: 50%;
   background: rgba(255, 255, 255, 0.15);
   flex-shrink: 0;
-  title: "Screenshot may be outdated";
 }
 
 /* Window group divider */
