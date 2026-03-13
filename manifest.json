@@ -4,11 +4,26 @@
   "version": "1.0.0",
   "description": "Visual Safari-style tab overview",
 
-  "permissions": ["tabs", "activeTab", "<all_urls>"],
+  "permissions": ["tabs", "activeTab", "<all_urls>", "storage"],
 
   "browser_action": {
     "default_icon": "icons/rectangle.on.rectangle.svg",
     "default_title": "Tab Exposé"
+  },
+
+  "commands": {
+    "open-expose": {
+      "suggested_key": {
+        "mac": "Command+Shift+E",
+        "default": "Ctrl+Shift+E"
+      },
+      "description": "Open Tab Exposé"
+    }
+  },
+
+  "options_ui": {
+    "page": "options.html",
+    "browser_style": true
   },
 
   "background": {

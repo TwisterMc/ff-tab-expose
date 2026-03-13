@@ -10,11 +10,29 @@ let ready = false;
 
 // ── Init ──────────────────────────────────────────────
 
+async function sendMessageWithRetry(message, maxRetries = 3) {
+  for (let i = 0; i < maxRetries; i++) {
+    try {
+      return await browser.runtime.sendMessage(message);
+    } catch (e) {
+      if (
+        i < maxRetries - 1 &&
+        e.message.includes("Receiving end does not exist")
+      ) {
+        // Background script not ready yet, wait and retry
+        await new Promise((resolve) => setTimeout(resolve, 100));
+      } else {
+        throw e;
+      }
+    }
+  }
+}
+
 async function init() {
   const selfTab = await browser.tabs.getCurrent();
   currentExposeTabId = selfTab?.id ?? null;
 
-  const response = await browser.runtime.sendMessage({ type: "GET_ALL_TABS" });
+  const response = await sendMessageWithRetry({ type: "GET_ALL_TABS" });
   allTabs = (response?.tabs ?? []).filter((t) => t.id !== currentExposeTabId);
 
   ready = true;
@@ -172,7 +190,7 @@ function getDomain(url) {
 // ── Actions ───────────────────────────────────────────
 
 async function switchToTab(tabId, windowId) {
-  await browser.runtime.sendMessage({ type: "SWITCH_TAB", tabId, windowId });
+  await sendMessageWithRetry({ type: "SWITCH_TAB", tabId, windowId });
   window.close();
 }
 
@@ -188,7 +206,7 @@ async function closeTab(tabId, cardEl) {
   const filtered = query ? filterTabs(allTabs, query) : allTabs;
   tabCountEl.textContent = `${filtered.length} tab${filtered.length !== 1 ? "s" : ""}`;
 
-  await browser.runtime.sendMessage({ type: "CLOSE_TAB", tabId });
+  await sendMessageWithRetry({ type: "CLOSE_TAB", tabId });
 }
 
 // ── Search ────────────────────────────────────────────
