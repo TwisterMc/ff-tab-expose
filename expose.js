@@ -38,6 +38,69 @@ async function init() {
   ready = true;
   render(allTabs);
   searchInput.focus();
+  lazyLoadMissingScreenshots();
+}
+
+async function lazyLoadMissingScreenshots() {
+  const pendingTabIds = allTabs
+    .filter((tab) => !tab.screenshot)
+    .map((tab) => tab.id)
+    .filter((id) => id != null);
+
+  if (!pendingTabIds.length) return;
+
+  const BATCH_SIZE = 6;
+
+  while (pendingTabIds.length) {
+    const batch = pendingTabIds.splice(0, BATCH_SIZE);
+    const response = await sendMessageWithRetry({
+      type: "CAPTURE_MISSING_SCREENSHOTS",
+      tabIds: batch,
+    });
+
+    const screenshots = response?.screenshots || {};
+    if (Object.keys(screenshots).length > 0) {
+      allTabs = allTabs.map((tab) => {
+        const screenshot = screenshots[tab.id];
+        if (!screenshot) return tab;
+
+        updateCardScreenshot(tab.id, screenshot, tab.title || "Untitled");
+
+        return {
+          ...tab,
+          screenshot,
+          screenshotAge: 0,
+        };
+      });
+    }
+
+    await new Promise((resolve) => setTimeout(resolve, 50));
+  }
+}
+
+function updateCardScreenshot(tabId, screenshot, title) {
+  const card = grid.querySelector(`.tab-card[data-tab-id="${tabId}"]`);
+  if (!card) return;
+
+  const thumb = card.querySelector(".tab-thumb");
+  if (!thumb) return;
+
+  const existingImg = thumb.querySelector("img.tab-screenshot");
+  if (existingImg) {
+    existingImg.src = screenshot;
+    existingImg.alt = "";
+    return;
+  }
+
+  const noScreenshot = thumb.querySelector(".no-screenshot");
+  if (noScreenshot) noScreenshot.remove();
+
+  const img = document.createElement("img");
+  img.className = "tab-screenshot";
+  img.src = screenshot;
+  img.alt = "";
+  img.loading = "lazy";
+  thumb.prepend(img);
 }
 
 // ── Render ────────────────────────────────────────────
@@ -96,6 +159,7 @@ function buildCard(tab) {
 
   if (tab.screenshot) {
     const img = document.createElement("img");
+    img.className = "tab-screenshot";
     img.src = tab.screenshot;
     img.alt = "";
     img.loading = "lazy";

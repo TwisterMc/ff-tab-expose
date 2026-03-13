@@ -1,6 +1,46 @@
 // Tab screenshot cache: tabId -> { dataUrl, timestamp, title, url, favIconUrl }
 const screenshotCache = new Map();
 
+function isCapturableUrl(url = "") {
+  return !url.startsWith("about:") && !url.startsWith("moz-extension:");
+}
+
+async function captureTabScreenshot(tab) {
+  if (!tab?.id || tab.id < 0) return null;
+  if (!isCapturableUrl(tab.url || "")) return null;
+
+  try {
+    let dataUrl = null;
+
+    // Firefox supports captureTab, which can capture non-active tabs.
+    if (typeof browser.tabs.captureTab === "function") {
+      dataUrl = await browser.tabs.captureTab(tab.id, {
+        format: "jpeg",
+        quality: 70,
+      });
+    } else if (tab.active) {
+      dataUrl = await browser.tabs.captureVisibleTab(tab.windowId, {
+        format: "jpeg",
+        quality: 70,
+      });
+    }
+
+    if (!dataUrl) return null;
+
+    screenshotCache.set(tab.id, {
+      dataUrl,
+      timestamp: Date.now(),
+      title: tab.title,
+      url: tab.url,
+      favIconUrl: tab.favIconUrl,
+    });
+
+    return dataUrl;
+  } catch (e) {
+    return null;
+  }
+}
+
 // Capture the currently visible tab
 async function captureCurrentTab() {
   try {
@@ -14,10 +54,7 @@ async function captureCurrentTab() {
     if (!tab.id || tab.id < 0) return;
 
     // Don't capture browser internal pages
-    if (
-      tab.url &&
-      (tab.url.startsWith("about:") || tab.url.startsWith("moz-extension:"))
-    ) {
+    if (!isCapturableUrl(tab.url || "")) {
       return;
     }
 
@@ -134,6 +171,31 @@ browser.runtime.onMessage.addListener((message, sender, sendResponse) => {
     browser.tabs.remove(message.tabId).then(() => {
       sendResponse({ ok: true });
     });
+    return true;
+  }
+
+  if (message.type === "CAPTURE_MISSING_SCREENSHOTS") {
+    const requestedIds = new Set(message.tabIds || []);
+
+    browser.tabs.query({}).then(async (tabs) => {
+      const screenshots = {};
+
+      for (const tab of tabs) {
+        if (!requestedIds.has(tab.id)) continue;
+
+        const existing = screenshotCache.get(tab.id);
+        if (existing?.dataUrl) {
+          screenshots[tab.id] = existing.dataUrl;
+          continue;
+        }
+
+        const dataUrl = await captureTabScreenshot(tab);
+        if (dataUrl) screenshots[tab.id] = dataUrl;
+      }
+
+      sendResponse({ screenshots });
+    });
+
     return true;
   }
 });
