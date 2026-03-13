@@ -270,6 +270,39 @@ body {
   padding: 9px 10px 9px 10px;
 }
 
+/* Container color top border */
+.tab-card[data-color] .tab-info {
+  border-top: 3px solid;
+}
+
+.tab-card[data-color="blue"] .tab-info {
+  border-top-color: #0a84ff;
+}
+
+.tab-card[data-color="red"] .tab-info {
+  border-top-color: #ff453a;
+}
+
+.tab-card[data-color="green"] .tab-info {
+  border-top-color: #34c759;
+}
+
+.tab-card[data-color="orange"] .tab-info {
+  border-top-color: #ff9f40;
+}
+
+.tab-card[data-color="pink"] .tab-info {
+  border-top-color: #ff375f;
+}
+
+.tab-card[data-color="purple"] .tab-info {
+  border-top-color: #bf5af2;
+}
+
+.tab-card[data-color="yellow"] .tab-info {
+  border-top-color: #ffcc00;
+}
+
 .tab-favicon {
   width: 14px;
   height: 14px;

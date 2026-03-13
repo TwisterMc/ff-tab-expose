@@ -184,24 +184,41 @@ browser.runtime.onMessage.addListener((message, sender, sendResponse) => {
 
   if (message.type === "GET_ALL_TABS") {
     browser.tabs.query({}).then(async (tabs) => {
+      // Get all containers for lookup
+      let containers = {};
+      try {
+        const allContainers = await browser.contextualIdentities.query({});
+        allContainers.forEach((c) => {
+          containers[c.cookieStoreId] = { name: c.name, color: c.color };
+        });
+      } catch (e) {
+        // contextualIdentities not available
+      }
+
       const result = tabs
         .filter((tab) => {
           const url = tab.url || "";
           return !url.startsWith("moz-extension:");
         })
-        .map((tab) => ({
-          id: tab.id,
-          windowId: tab.windowId,
-          title: tab.title || "Untitled",
-          url: tab.url || "",
-          favIconUrl: tab.favIconUrl || "",
-          active: tab.active,
-          pinned: tab.pinned,
-          screenshot: screenshotCache.get(tab.id)?.dataUrl || null,
-          screenshotAge: screenshotCache.get(tab.id)
-            ? Date.now() - screenshotCache.get(tab.id).timestamp
-            : null,
-        }));
+        .map((tab) => {
+          const container = containers[tab.cookieStoreId];
+          return {
+            id: tab.id,
+            windowId: tab.windowId,
+            title: tab.title || "Untitled",
+            url: tab.url || "",
+            favIconUrl: tab.favIconUrl || "",
+            active: tab.active,
+            pinned: tab.pinned,
+            cookieStoreId: tab.cookieStoreId,
+            containerName: container?.name || null,
+            containerColor: container?.color || null,
+            screenshot: screenshotCache.get(tab.id)?.dataUrl || null,
+            screenshotAge: screenshotCache.get(tab.id)
+              ? Date.now() - screenshotCache.get(tab.id).timestamp
+              : null,
+          };
+        });
       sendResponse({ tabs: result });
     });
     return true; // async

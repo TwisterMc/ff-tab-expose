@@ -4,7 +4,13 @@
   "version": "1.0.0",
   "description": "Visual Safari-style tab overview",
 
-  "permissions": ["tabs", "activeTab", "<all_urls>", "storage"],
+  "permissions": [
+    "tabs",
+    "activeTab",
+    "<all_urls>",
+    "storage",
+    "contextualIdentities"
+  ],
 
   "icons": {
     "48": "icons/rectangle.on.rectangle.svg",

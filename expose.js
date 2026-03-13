@@ -143,6 +143,9 @@ function buildCard(tab) {
   const card = document.createElement("div");
   card.className = "tab-card";
   card.dataset.tabId = tab.id;
+  if (tab.containerColor) {
+    card.dataset.color = tab.containerColor;
+  }
   card.tabIndex = 0;
   card.setAttribute("role", "button");
   const labelParts = [tab.title || "Untitled"];
