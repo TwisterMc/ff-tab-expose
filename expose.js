@@ -237,13 +237,6 @@ function buildCard(tab) {
   title.title = tab.title + "\n" + tab.url;
   info.appendChild(title);
 
-  if (ageMinutes != null && ageMinutes > 5) {
-    const dot = document.createElement("div");
-    dot.className = "stale-dot";
-    dot.title = `Screenshot taken ${ageMinutes}m ago`;
-    info.appendChild(dot);
-  }
-
   card.appendChild(thumb);
   card.appendChild(info);
 

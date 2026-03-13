@@ -396,15 +396,6 @@ body {
   border: none;
 }
 
-/* Screenshot age dot */
-.stale-dot {
-  width: 5px;
-  height: 5px;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.15);
-  flex-shrink: 0;
-}
-
 /* Window group divider */
 
 .window-group {
@@ -483,9 +474,5 @@ body {
     background: rgba(255, 255, 255, 0.9);
     border: 1px solid rgba(12, 18, 28, 0.15);
     color: rgba(12, 18, 28, 0.8);
-  }
-
-  .stale-dot {
-    background: rgba(12, 18, 28, 0.28);
   }
 }
