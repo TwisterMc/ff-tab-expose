@@ -7,7 +7,19 @@
   "permissions": ["tabs", "activeTab", "<all_urls>", "storage"],
 
   "browser_action": {
-    "default_icon": "icons/rectangle.on.rectangle.svg",
+    "default_icon": "icons/rectangle.on.rectangle.light.svg",
+    "theme_icons": [
+      {
+        "light": "icons/rectangle.on.rectangle.dark.svg",
+        "dark": "icons/rectangle.on.rectangle.light.svg",
+        "size": 16
+      },
+      {
+        "light": "icons/rectangle.on.rectangle.dark.svg",
+        "dark": "icons/rectangle.on.rectangle.light.svg",
+        "size": 32
+      }
+    ],
     "default_title": "Tab Exposé"
   },
 
