@@ -182,7 +182,7 @@ function buildCard(tab) {
 
     const label = document.createElement("span");
     label.className = "no-preview-label";
-    label.textContent = "No preview yet";
+    label.textContent = "";
     noShot.appendChild(label);
     thumb.appendChild(noShot);
   }
