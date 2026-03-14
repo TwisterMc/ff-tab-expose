@@ -126,10 +126,16 @@ function render(tabs) {
     if (multiWindow) {
       const divider = document.createElement("div");
       divider.className = "window-group";
-      divider.innerHTML = `
-        <span class="window-label">Window ${wIndex + 1}</span>
-        <span class="window-line"></span>
-      `;
+
+      const label = document.createElement("span");
+      label.className = "window-label";
+      label.textContent = `Window ${wIndex + 1}`;
+      divider.appendChild(label);
+
+      const line = document.createElement("span");
+      line.className = "window-line";
+      divider.appendChild(line);
+
       grid.appendChild(divider);
     }
 
