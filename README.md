@@ -48,6 +48,10 @@ The shortcut toggles Tab Expose:
 - Click the close button on a card to close that tab.
 - Press `Esc` to clear search (or close Expose when search is empty).
 
+## Known Limitations
+
+- **Hibernated tabs**: Tabs that haven't been loaded yet (hibernated by Firefox on startup) may not appear in the Tab Expose view until they've been opened and loaded in the browser.
+
 ## Keyboard Navigation
 
 - `Tab`: Move focus through tab cards
