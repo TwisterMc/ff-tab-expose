@@ -4,7 +4,7 @@
     {
       "label": "Build XPI",
       "type": "shell",
-      "command": "cd /Users/thomas/Sites/GitHub/ff-tab-expose && zip -r ff-tab-expose.zip . -x '.DS_Store' 'icons/.DS_Store' 'ff-tab-expose.xpi' '__MACOSX/*' '.git/*' '.vscode/*' '.gitignore' && mv ff-tab-expose.zip ff-tab-expose.xpi && echo 'XPI file created successfully'",
+      "command": "cd /Users/thomas/Sites/GitHub/ff-tab-expose && zip -r ff-tab-expose.zip . -x '.DS_Store' 'icons/.DS_Store' 'ff-tab-expose.xpi' '__MACOSX/*' '.git/*' '.vscode/*' '.gitignore' 'LICENSE' 'README.md' && mv ff-tab-expose.zip ff-tab-expose.xpi && echo 'XPI file created successfully'",
       "group": "build"
     }
   ]
