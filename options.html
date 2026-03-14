@@ -78,80 +78,10 @@
         margin-top: 8px;
         line-height: 1.5;
       }
-
-      .button-group {
-        display: flex;
-        gap: 12px;
-        margin-top: 16px;
-      }
-
-      button {
-        padding: 10px 16px;
-        border: none;
-        border-radius: 6px;
-        font-size: 14px;
-        font-weight: 600;
-        cursor: pointer;
-        transition: all 0.2s ease;
-      }
-
-      .primary-button {
-        background-color: #0078d4;
-        color: white;
-      }
-
-      .primary-button:hover {
-        background-color: #106ebe;
-      }
-
-      .secondary-button {
-        background-color: #e5e5e5;
-        color: #333;
-      }
-
-      .secondary-button:hover {
-        background-color: #d5d5d5;
-      }
-
-      .manage-link {
-        color: #0078d4;
-        text-decoration: none;
-        font-weight: 600;
-        cursor: pointer;
-      }
-
-      .manage-link:hover {
-        text-decoration: underline;
-      }
-
-      .status-message {
-        padding: 12px;
-        border-radius: 6px;
-        margin-bottom: 16px;
-        display: none;
-      }
-
-      .status-message.success {
-        background-color: #e7f5e7;
-        color: #2d5016;
-        border: 1px solid #a6d5a6;
-      }
-
-      .status-message.info {
-        background-color: #e7f0ff;
-        color: #003d99;
-        border: 1px solid #99ccff;
-      }
-
-      .status-message.show {
-        display: block;
-      }
     </style>
   </head>
   <body>
     <h1>Tab Exposé Settings</h1>
-
-    <div id="status-message" class="status-message"></div>
 
     <div class="settings-section">
       <div class="setting-item">
@@ -164,13 +94,9 @@
           </div>
         </div>
         <p class="info-text">
-          Use Manage Shortcuts to change this key binding in Firefox.
+          To change this keyboard shortcut, click the gear icon, and select
+          <strong>Manage Extension Shortcuts</strong>.
         </p>
-        <div class="button-group">
-          <button class="primary-button" id="manage-shortcuts-btn">
-            Manage Shortcuts
-          </button>
-        </div>
       </div>
     </div>
 
