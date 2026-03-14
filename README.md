@@ -10,12 +10,16 @@ FF Tab Expose gives you a visual overview of your open Firefox tabs, inspired by
 - Lets you search tabs by title or URL
 - Displays tab previews
 - Lets you switch or close tabs quickly
+- Supports multiple windows
+- Supports Firefox Multi-Account Containers
 
 ## Install
 
 Cominng soon.
 
-If you really want it now, download the code, zip it up, rename it to .xpi and add it to Firefox. You may need to load it via temporary add-on. It'll be up on Firefox Add-ons soon.
+If you really want it now, download the code, un-zip it up, go to about:debugging#/runtime/this-firefox and Load Temporary Add-on.
+
+It'll be up on Firefox Add-ons soon.
 
 ## Open Tab Expose
 
