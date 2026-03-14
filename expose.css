@@ -48,7 +48,6 @@ body {
   gap: 16px;
   padding: 20px 28px 16px;
   flex-shrink: 0;
-  background: rgba(17, 17, 19, 0.8);
 }
 
 #search-wrap {
