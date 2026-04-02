@@ -85,6 +85,36 @@
 
     <div class="settings-section">
       <div class="setting-item">
+        <label for="columns-input">Grid Columns</label>
+        <div style="display: flex; align-items: center; gap: 12px">
+          <input
+            type="range"
+            id="columns-input"
+            min="2"
+            max="8"
+            value="4"
+            style="flex: 1"
+          />
+          <span
+            id="columns-value"
+            style="
+              min-width: 30px;
+              text-align: center;
+              font-weight: 600;
+              color: #222;
+            "
+            >4</span
+          >
+        </div>
+        <p class="info-text">
+          Adjust the number of columns in the tab grid. Cards will scale to fill
+          the width.
+        </p>
+      </div>
+    </div>
+
+    <div class="settings-section">
+      <div class="setting-item">
         <label>Keyboard Shortcut</label>
         <div class="shortcut-display">
           <div class="shortcut-info">

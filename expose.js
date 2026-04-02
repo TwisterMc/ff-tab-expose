@@ -32,6 +32,15 @@ async function init() {
   const selfTab = await browser.tabs.getCurrent();
   currentExposeTabId = selfTab?.id ?? null;
 
+  // Load and apply grid columns setting
+  try {
+    const stored = await browser.storage.local.get("gridColumns");
+    const columns = stored.gridColumns ?? 4;
+    grid.style.setProperty("--grid-columns", columns);
+  } catch (e) {
+    console.error("Error loading grid columns:", e);
+  }
+
   const response = await sendMessageWithRetry({ type: "GET_ALL_TABS" });
   allTabs = (response?.tabs ?? []).filter((t) => t.id !== currentExposeTabId);
 
