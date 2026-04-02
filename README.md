@@ -15,11 +15,7 @@ FF Tab Expose gives you a visual overview of your open Firefox tabs, inspired by
 
 ## Install
 
-Cominng soon.
-
-If you really want it now, download the code, un-zip it up, go to about:debugging#/runtime/this-firefox and Load Temporary Add-on.
-
-It'll be up on Firefox Add-ons soon.
+Head over to [Mozilla Addons](https://addons.mozilla.org/en-US/firefox/addon/ff-tab-expos%C3%A9/)
 
 ## Open Tab Expose
 
