@@ -1,7 +1,7 @@
 {
   "manifest_version": 2,
   "name": "FF Tab Exposé",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Visual Safari-style tab overview",
 
   "permissions": [
